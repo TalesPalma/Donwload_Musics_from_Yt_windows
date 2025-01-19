@@ -1,0 +1,9 @@
+[package]
+name = "rust_download_musics_yt"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+druid = "0.8.3"
+
+
