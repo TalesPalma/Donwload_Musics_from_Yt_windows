@@ -1,24 +1,58 @@
-use druid::{widget::{Label, Padding}, AppLauncher, LocalizedString, PlatformError, Widget, WindowDesc};
+use druid::{widget::{Button, Flex, Label, Padding, TextBox}, AppLauncher, Clipboard, Data, Lens, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
 
-pub fn init() -> Result<(), PlatformError> {
+use crate::service;
+
+#[derive(Clone, Data, Lens)]
+struct AppState {
+    url: String,
+}
+
+
+pub fn run() -> Result<(), PlatformError> {
     // Define a descrição da janela
     let main_window = WindowDesc::new(ui_builder())
         .title("Meu App Rust GUI")
         .window_size((400.0, 200.0));
 
+
+
     // Dados iniciais (usados para gerenciar o estado do app)
-    let initial_data = ();
+    let initial_data = AppState{
+        url: String::new(),
+    };
 
     // Inicia o aplicativo
     AppLauncher::with_window(main_window)
         .launch(initial_data)?;
 
+
+
+
     Ok(())
 }
 
 // Constrói a interface gráfica
-fn ui_builder() -> impl Widget<()> {
-    // Um rótulo simples como exemplo
-    let label = Label::new(LocalizedString::new("Hello, Rust!"));
-    Padding::new(10.0, label)
+fn ui_builder() -> impl Widget<AppState> {
+
+
+    let label = Label::new("Digite a URL do vídeo do YouTube:");
+
+    let textbox = TextBox::new()
+    .with_placeholder("Url do vídeo")
+    .fix_width(300.0)
+    .lens(AppState::url);
+
+    let button = Button::new("Baixar")
+    .on_click(|_ctx, data: &mut AppState, _env| {
+        service::services::get_music_from_yt(&data.url);
+    });
+
+
+
+    Flex::column()
+    .with_child(Padding::new(10.0, label))
+    .with_child(Padding::new(10.0, textbox))
+    .with_child(Padding::new(10.0, button))
+
+
 }
