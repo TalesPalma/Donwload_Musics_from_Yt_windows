@@ -1,4 +1,5 @@
-use druid::{widget::{Button, Flex, Label, Padding, TextBox}, AppLauncher, Clipboard, Data, Lens, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
+use tokio::task;
+use druid::{widget::{Button, Flex, Label, Padding, TextBox}, AppLauncher,  Data, Lens,  PlatformError, Widget, WidgetExt, WindowDesc};
 
 use crate::service;
 
@@ -44,7 +45,11 @@ fn ui_builder() -> impl Widget<AppState> {
 
     let button = Button::new("Baixar")
     .on_click(|_ctx, data: &mut AppState, _env| {
-        service::services::get_music_from_yt(&data.url);
+        let url = data.url.clone();
+        task::spawn(async move{
+            service::services::get_music_from_yt(&url).await;
+        });
+        
     });
 
 

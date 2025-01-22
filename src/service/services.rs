@@ -2,7 +2,7 @@ use std::{fs, path::Path, process::Command};
 
 
 
-pub fn get_music_from_yt(url : &str){
+pub async fn get_music_from_yt(url : &str){
     let pasta_saida = "./Music"; // Substitua pela pasta de saída desejada
 
     // Cria o diretório de saída, se não existir
@@ -23,7 +23,7 @@ pub fn get_music_from_yt(url : &str){
 
     if !status.success() {
         eprintln!("Falha ao baixar ou converter o áudio");
-        return;
+        return; // retorne um erro aqui, se necessário
     }
 
     println!("Músicas baixadas e salvas em {:?}", pasta_saida);
