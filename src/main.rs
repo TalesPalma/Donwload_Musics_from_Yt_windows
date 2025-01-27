@@ -2,6 +2,14 @@
 mod service;
 mod gui;
 
-fn main() {
-    gui::gui::run().unwrap();
+#[tokio::main]
+async fn main() {
+    let result   =   gui::gui::run().await;
+    result.unwrap();
 }
+
+
+
+
+
+

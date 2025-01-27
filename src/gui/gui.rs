@@ -8,8 +8,7 @@ struct AppState {
     url: String,
 }
 
-
-pub fn run() -> Result<(), PlatformError> {
+pub async fn run() -> Result<(), PlatformError> {
     // Define a descrição da janela
     let main_window = WindowDesc::new(ui_builder())
         .title("Meu App Rust GUI")
@@ -61,3 +60,4 @@ fn ui_builder() -> impl Widget<AppState> {
 
 
 }
+
